@@ -112,4 +112,10 @@ impl Flash {
         let ptr = Flash::get_address(self, offset, size) as *const u8;
         unsafe { core::ptr::read(ptr as *const _) }
     }
+
+    pub fn read_into<T>(&self, offset: usize, dest: &mut T) {
+        let size = core::mem::size_of::<T>();
+        let ptr = Flash::get_address(self, offset, size) as *const u8;
+        unsafe { core::ptr::copy_nonoverlapping(ptr as *const _, dest, 1); };
+    }
 }
